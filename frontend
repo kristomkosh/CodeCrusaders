@@ -1,0 +1,77 @@
+use std::io::{self, Write};
+
+struct AIAssistant {
+    name: String,
+    privacy_enabled: bool,
+    differential_privacy_enabled: bool,
+    federated_learning_enabled: bool,
+}
+
+impl AIAssistant {
+    fn new() -> AIAssistant {
+        AIAssistant {
+            name: String::from("AI Assistant"),
+            privacy_enabled: true,
+            differential_privacy_enabled: true,
+            federated_learning_enabled: true,
+        }
+    }
+
+    fn greet_user(&self) {
+        println!("Hello! I'm your {}. How can I assist you today?", self.name);
+        self.print_privacy_settings();
+    }
+
+    fn print_privacy_settings(&self) {
+        let privacy_status = if self.privacy_enabled { "enabled" } else { "disabled" };
+        println!("Privacy Settings: Privacy is currently {}.", privacy_status);
+        println!("Type 'privacy on' or 'privacy off' to toggle privacy settings.");
+        if self.privacy_enabled {
+            println!("Differential Privacy: {}", if self.differential_privacy_enabled { "enabled" } else { "disabled" });
+            println!("Federated Learning: {}", if self.federated_learning_enabled { "enabled" } else { "disabled" });
+            println!("Type 'diff_privacy on' or 'diff_privacy off' to toggle differential privacy settings.");
+            println!("Type 'federated_learning on' or 'federated_learning off' to toggle federated learning settings.");
+        }
+    }
+
+    fn process_command(&mut self, command: &str) -> Result<String, &'static str> {
+        match command.trim().to_lowercase().as_str() {
+            "privacy on" => { self.privacy_enabled = true; Ok("Privacy is now enabled.".to_string()) }
+            "privacy off" => { self.privacy_enabled = false; Ok("Privacy is now disabled.".to_string()) }
+            "diff_privacy on" => { self.differential_privacy_enabled = true; Ok("Differential privacy is now enabled.".to_string()) }
+            "diff_privacy off" => { self.differential_privacy_enabled = false; Ok("Differential privacy is now disabled.".to_string()) }
+            "federated_learning on" => { self.federated_learning_enabled = true; Ok("Federated learning is now enabled.".to_string()) }
+            "federated_learning off" => { self.federated_learning_enabled = false; Ok("Federated learning is now disabled.".to_string()) }
+            _ if self.privacy_enabled => Ok("Placeholder response (with privacy enabled)".to_string()),
+            _ => Ok("Placeholder response (without privacy)".to_string()),
+        }
+    }
+}
+
+fn main() {
+    let mut assistant = AIAssistant::new();
+    assistant.greet_user();
+
+    loop {
+        print!("You: ");
+        io::stdout().flush().expect("Failed to flush stdout");
+
+        let mut user_input = String::new();
+        io::stdin().read_line(&mut user_input).expect("Failed to read line");
+
+        let user_input = user_input.trim();
+
+        if user_input.eq_ignore_ascii_case("exit") || user_input.eq_ignore_ascii_case("quit") {
+            println!("Goodbye!");
+            break;
+        }
+
+        match assistant.process_command(user_input) {
+            Ok(response) => {
+                println!("{}: {}", assistant.name, response);
+                assistant.print_privacy_settings();
+            }
+            Err(err) => println!("Error: {}", err),
+        }
+    }
+}
