@@ -1,0 +1,44 @@
+
+  "canisters": {
+    "main": {
+      "main": "src/main/lib.rs",
+      "type": "custom"
+    },
+    "nlu": {
+      "main": "src/nlu/lib.rs",
+      "type": "custom"
+    },
+    "scheduler": {
+      "main": "src/scheduler/lib.rs",
+      "type": "custom"
+    },
+    "recommendation": {
+      "main": "src/recommendation/lib.rs",
+      "type": "custom"
+    },
+    "todo": {
+      "main": "src/todo/lib.rs",
+      "type": "custom"
+    },
+    "messaging": {
+      "main": "src/messaging/lib.rs",
+      "type": "custom"
+    },
+    "encryption": {
+      "main": "src/encryption/lib.rs",
+      "type": "custom"
+    }
+  },
+  "dfx": "0.7.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "defaults": {
+    "build": {
+      "output": "target/dfx"
+    }
+  }
+}
